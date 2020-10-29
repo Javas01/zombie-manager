@@ -1,0 +1,1 @@
+export { useRenderZombies } from './useRenderZombies'
