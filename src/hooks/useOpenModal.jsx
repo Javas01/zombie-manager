@@ -1,5 +1,5 @@
-import { useState, useContext, useRef } from 'react'
-import { Modal, Button, Input, Select, Form } from 'antd';
+import { useContext, useRef } from 'react'
+import { Modal, Input, Select, Form, message, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { gql, useMutation} from '@apollo/client';
 import { addZombie, editZombie, deleteZombie } from '../utils'
@@ -35,10 +35,11 @@ const DELETE_ZOMBIE = gql`
 
 export default function useOpenModal(name, location, id) {
   const [zombies, setZombies] = useContext(ZombieContext)
-  const [addNewZombie] = useMutation(ADD_ZOMBIE);
-  const [editNewZombie] = useMutation(EDIT_ZOMBIE);
-  const [deleteNewZombie] = useMutation(DELETE_ZOMBIE);
+  const [addZombieMutation] = useMutation(ADD_ZOMBIE);
+  const [editZombieMutation] = useMutation(EDIT_ZOMBIE);
+  const [deleteZombieMutation] = useMutation(DELETE_ZOMBIE);
   const form = useRef('');
+  let deletedZombie 
 
   const { confirm } = Modal;
 
@@ -57,9 +58,9 @@ export default function useOpenModal(name, location, id) {
             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
         >
+          <Select.Option value="hospital">Hospital</Select.Option>
           <Select.Option value="school">School</Select.Option>
           <Select.Option value="warehouse">Warehouse</Select.Option>
-          <Select.Option value="hospital">Hospital</Select.Option>
         </Select>
       </Form.Item>
     </Form>
@@ -80,9 +81,9 @@ export default function useOpenModal(name, location, id) {
             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
         >
+          <Select.Option value="hospital">Hospital</Select.Option>
           <Select.Option value="school">School</Select.Option>
           <Select.Option value="warehouse">Warehouse</Select.Option>
-          <Select.Option value="hospital">Hospital</Select.Option>
         </Select>
       </Form.Item>
     </Form>
@@ -96,7 +97,7 @@ export default function useOpenModal(name, location, id) {
         const {input, select}  = form.current.getFieldValue()
         if(input && select) {
           setZombies(addZombie(zombies, input, select))
-          addNewZombie({ variables: { name: input, location: select } });
+          addZombieMutation({ variables: { name: input, location: select } });
         }
         else{
           alert('fill in all fields')
@@ -111,7 +112,7 @@ export default function useOpenModal(name, location, id) {
       onOk() {
         let {input, select}  = form.current.getFieldValue()
         setZombies(editZombie(zombies, input, select, id))
-        editNewZombie({ variables: { id: id, name: input, location: select } })
+        editZombieMutation({ variables: { id: id, name: input, location: select } })
       }
     });
   }
@@ -124,7 +125,8 @@ export default function useOpenModal(name, location, id) {
       cancelText: 'No',
       onOk() {
         setZombies(deleteZombie(zombies, id))
-        deleteNewZombie({ variables: { id: id } })
+        deleteZombieMutation({ variables: { id: id } })
+        message.info(`${name} deleted`, 5)
       }
     });
   }

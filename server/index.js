@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
+require('dotenv').config()
 
 const startServer = async () => {
   const app = express();
@@ -14,7 +15,7 @@ const startServer = async () => {
 
   server.applyMiddleware({ app });
 
-  await mongoose.connect("mongodb+srv://jawwaad:01_Eerbas@zombie-manager.ljbo3.mongodb.net/test", {
+  await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/zombie-manager', {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });

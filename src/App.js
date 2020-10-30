@@ -1,29 +1,13 @@
-import { useEffect, useContext } from 'react';
 import { Hospital, School, Warehouse } from './components'
 import './App.scss';
-import { gql, useQuery } from '@apollo/client';
 import { Button } from 'antd';
-import { useOpenModal } from "./hooks";
-import { ZombieContext } from './contexts/ZombieContext'
+import { useGetZombies, useOpenModal } from "./hooks";
 
-const GET_ZOMBIES = gql`
-  query {
-    zombies {
-      id,
-      name,
-      location
-    }
-  }
-`
+
 
 function App() {
-  const [zombies, setZombies] = useContext(ZombieContext)
-  const { loading, error, data } = useQuery(GET_ZOMBIES);
+  const loading = useGetZombies()
   const [openAddModal] = useOpenModal();
-
-  useEffect(() => {
-    if (loading === false) setZombies(data.zombies)
-  }, [loading])
 
   return (
     loading ? <p>Loading ...</p> : (
