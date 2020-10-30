@@ -20,6 +20,8 @@ $ yarn
 
 ### Running the Application
 
+*Make sure you have MongoDB running first.*
+
 In the root of the project, run the following command:.
 ```
 $ yarn start
