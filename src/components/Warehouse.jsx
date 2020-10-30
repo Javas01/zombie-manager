@@ -1,4 +1,4 @@
-import { useRenderZombies } from "../hooks/useRenderZombies";
+import { useRenderZombies } from "../hooks";
 
 export default function Warehouse() {
   return (
