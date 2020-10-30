@@ -17,7 +17,9 @@ export default function useGetZombies () {
   const { loading, error, data } = useQuery(GET_ZOMBIES)
 
   useEffect(() => {
-    if (loading === false) setZombies(data.zombies)
+    console.log(loading)
+    console.log(data)
+    if (loading === false) data && setZombies(data.zombies)
     if (error) throw new Error(error)
   }, [loading])
 

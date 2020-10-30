@@ -6,7 +6,7 @@ export default function addZombie (zombies, name, location) {
   zombiesClone.push({
     name: name,
     location: location,
-    id: Date.now()
+    id: Date.now()+''
   })
   return zombiesClone
 }

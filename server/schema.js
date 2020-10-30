@@ -6,7 +6,7 @@ const typeDefs = gql`
     mutation: Mutation
   }
   type Zombie {
-    id: ID!
+    id: String!
     name: String!
     location: String!
   }
@@ -14,9 +14,9 @@ const typeDefs = gql`
     zombies: [Zombie!]!
   }
   type Mutation {
-    createZombie(name: String!, location: String!): Zombie!
-    deleteZombie(id: ID!): Zombie!
-    editZombie(id: ID!, name: String, location: String): Zombie!
+    createZombie(id: String!, name: String!, location: String!): Zombie!
+    deleteZombie(id: String!): Zombie!
+    editZombie(id: String!, name: String, location: String): Zombie!
   }
 `
 

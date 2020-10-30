@@ -5,24 +5,29 @@ const resolvers = {
     zombies: () => Zombie.find()
   },
   Mutation: {
-    createZombie: async (_, { name, location }) => {
-      const zombie = new Zombie({ name, location })
+    createZombie: async (_, { id, name, location }) => {
+      const zombie = new Zombie({ id, name, location })
       await zombie.save()
       return zombie
     },
     deleteZombie: async (_, { id }) => {
-      return await Zombie.findByIdAndDelete(id)
+      return await Zombie.findOneAndDelete({ id: id })
     },
     editZombie: async (_, { id, name, location }) => {
       if (name === undefined) {
-        const zombie = await Zombie.findById(id)
+        const zombie = await Zombie.findOne({ id: id })
         name = zombie.name
       }
       if (location === undefined) {
-        const zombie = await Zombie.findById(id)
+        const zombie = await Zombie.findOne({ id: id })
         location = zombie.location
       }
-      return await Zombie.findByIdAndUpdate(id, { name: name, location: location })
+      const zombie = await Zombie.findOne({ id: id })
+      zombie.id = id
+      zombie.name = name
+      zombie.location = location
+      await zombie.save()
+      return zombie
     }
   }
 }

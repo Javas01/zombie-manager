@@ -6,8 +6,8 @@ import { addZombie, editZombie, deleteZombie } from '../utils'
 import { ZombieContext } from '../contexts/ZombieContext'
 
 const ADD_ZOMBIE = gql`
-  mutation CreateZombie($name: String!, $location: String!) {
-    createZombie(name: $name, location: $location) {
+  mutation CreateZombie($id: String!, $name: String!, $location: String!) {
+    createZombie(id: $id, name: $name, location: $location) {
       id,
       name,
       location
@@ -15,7 +15,7 @@ const ADD_ZOMBIE = gql`
   }
 `
 const EDIT_ZOMBIE = gql`
-  mutation EditZombie($id: ID!, $name: String, $location: String) {
+  mutation EditZombie($id: String!, $name: String, $location: String) {
     editZombie(id: $id, name: $name, location: $location) {
       id,
       name,
@@ -24,7 +24,7 @@ const EDIT_ZOMBIE = gql`
   }
 `
 const DELETE_ZOMBIE = gql`
-  mutation DeleteZombie($id: ID!) {
+  mutation DeleteZombie($id: String!) {
     deleteZombie(id: $id) {
       id,
       name,
@@ -94,7 +94,7 @@ export default function useOpenModal (name, location, id) {
         const { input, select } = form.current.getFieldValue()
         if (input && select) {
           setZombies(addZombie(zombies, input, select))
-          addZombieMutation({ variables: { name: input, location: select } })
+          addZombieMutation({ variables: { id: Date.now()+'', name: input, location: select } })
         } else {
           alert('fill in all fields')
         }
