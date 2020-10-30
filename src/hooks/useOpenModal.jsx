@@ -1,7 +1,7 @@
 import { useContext, useRef } from 'react'
-import { Modal, Input, Select, Form, message, Button } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { gql, useMutation} from '@apollo/client';
+import { Modal, Input, Select, Form, message } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { gql, useMutation } from '@apollo/client'
 import { addZombie, editZombie, deleteZombie } from '../utils'
 import { ZombieContext } from '../contexts/ZombieContext'
 
@@ -13,7 +13,7 @@ const ADD_ZOMBIE = gql`
       location
     }
   }
-`;
+`
 const EDIT_ZOMBIE = gql`
   mutation EditZombie($id: ID!, $name: String, $location: String) {
     editZombie(id: $id, name: $name, location: $location) {
@@ -22,7 +22,7 @@ const EDIT_ZOMBIE = gql`
       location
     }
   }
-`;
+`
 const DELETE_ZOMBIE = gql`
   mutation DeleteZombie($id: ID!) {
     deleteZombie(id: $id) {
@@ -31,36 +31,34 @@ const DELETE_ZOMBIE = gql`
       location
     }
   }
-`;
+`
 
-export default function useOpenModal(name, location, id) {
+export default function useOpenModal (name, location, id) {
   const [zombies, setZombies] = useContext(ZombieContext)
-  const [addZombieMutation] = useMutation(ADD_ZOMBIE);
-  const [editZombieMutation] = useMutation(EDIT_ZOMBIE);
-  const [deleteZombieMutation] = useMutation(DELETE_ZOMBIE);
-  const form = useRef('');
-  let deletedZombie 
+  const [addZombieMutation] = useMutation(ADD_ZOMBIE)
+  const [editZombieMutation] = useMutation(EDIT_ZOMBIE)
+  const [deleteZombieMutation] = useMutation(DELETE_ZOMBIE)
+  const form = useRef('')
 
-  const { confirm } = Modal;
+  const { confirm } = Modal
 
   const addModal = (
     <Form ref={form}>
       <Form.Item name='input'>
-        <Input addonBefore='name' placeholder={'cool zombie name'} />
+        <Input addonBefore='name' placeholder='cool zombie name' />
       </Form.Item>
       <Form.Item name='select'>
         <Select
           showSearch
           style={{ maxWidth: 315, width: '100%' }}
-          placeholder={'location'}
-          optionFilterProp="children"
+          placeholder='location'
+          optionFilterProp='children'
           filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         >
-          <Select.Option value="hospital">Hospital</Select.Option>
-          <Select.Option value="school">School</Select.Option>
-          <Select.Option value="warehouse">Warehouse</Select.Option>
+          <Select.Option value='hospital'>Hospital</Select.Option>
+          <Select.Option value='school'>School</Select.Option>
+          <Select.Option value='warehouse'>Warehouse</Select.Option>
         </Select>
       </Form.Item>
     </Form>
@@ -76,14 +74,13 @@ export default function useOpenModal(name, location, id) {
           showSearch
           style={{ maxWidth: 315, width: '100%' }}
           defaultValue={location}
-          optionFilterProp="children"
+          optionFilterProp='children'
           filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-          }
+            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         >
-          <Select.Option value="hospital">Hospital</Select.Option>
-          <Select.Option value="school">School</Select.Option>
-          <Select.Option value="warehouse">Warehouse</Select.Option>
+          <Select.Option value='hospital'>Hospital</Select.Option>
+          <Select.Option value='school'>School</Select.Option>
+          <Select.Option value='warehouse'>Warehouse</Select.Option>
         </Select>
       </Form.Item>
     </Form>
@@ -91,30 +88,29 @@ export default function useOpenModal(name, location, id) {
 
   const openAdd = () => {
     confirm({
-      title: `Add new Zombie`,
+      title: 'Add new Zombie',
       content: addModal,
-      onOk() {
-        const {input, select}  = form.current.getFieldValue()
-        if(input && select) {
+      onOk () {
+        const { input, select } = form.current.getFieldValue()
+        if (input && select) {
           setZombies(addZombie(zombies, input, select))
-          addZombieMutation({ variables: { name: input, location: select } });
-        }
-        else{
+          addZombieMutation({ variables: { name: input, location: select } })
+        } else {
           alert('fill in all fields')
         }
       }
-    });
+    })
   }
   const openEdit = () => {
     confirm({
       title: `Edit ${name}`,
       content: editModal,
-      onOk() {
-        let {input, select}  = form.current.getFieldValue()
+      onOk () {
+        const { input, select } = form.current.getFieldValue()
         setZombies(editZombie(zombies, input, select, id))
         editZombieMutation({ variables: { id: id, name: input, location: select } })
       }
-    });
+    })
   }
   const openDelete = () => {
     confirm({
@@ -123,12 +119,12 @@ export default function useOpenModal(name, location, id) {
       okText: 'Yes',
       okType: 'danger',
       cancelText: 'No',
-      onOk() {
+      onOk () {
         setZombies(deleteZombie(zombies, id))
         deleteZombieMutation({ variables: { id: id } })
         message.info(`${name} deleted`, 5)
       }
-    });
+    })
   }
 
   return [openAdd, openEdit, openDelete]

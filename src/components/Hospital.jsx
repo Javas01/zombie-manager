@@ -1,8 +1,8 @@
-import { useRenderZombies } from "../hooks";
+import { useRenderZombies } from '../hooks'
 
-export default function Hospital() {
+export default function Hospital () {
   return (
-    <div className="hospital">
+    <div className='hospital'>
       <h2>Hospital</h2>
       {useRenderZombies('hospital')}
     </div>

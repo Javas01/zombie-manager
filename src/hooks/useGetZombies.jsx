@@ -1,5 +1,5 @@
-import { useEffect, useContext } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useEffect, useContext } from 'react'
+import { gql, useQuery } from '@apollo/client'
 import { ZombieContext } from '../contexts/ZombieContext'
 
 const GET_ZOMBIES = gql`
@@ -12,9 +12,9 @@ query {
 }
 `
 
-export default function useGetZombies() {
-  const [_, setZombies] = useContext(ZombieContext)
-  const { loading, error, data } = useQuery(GET_ZOMBIES);
+export default function useGetZombies () {
+  const [, setZombies] = useContext(ZombieContext)
+  const { loading, error, data } = useQuery(GET_ZOMBIES)
 
   useEffect(() => {
     if (loading === false) setZombies(data.zombies)
