@@ -15,7 +15,7 @@ const startServer = async () => {
 
   server.applyMiddleware({ app })
 
-  await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/zombie-manager', {
+  await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://test:m4yPqgwiPMqtaxdG@zombie-manager.ljbo3.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
